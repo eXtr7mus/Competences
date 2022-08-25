@@ -65,7 +65,7 @@ namespace API.Controllers
                 Email = registerDto.Email    
             };
 
-            var result = await _userManager.CreateAsync(appUser);
+            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
             if (result.Succeeded) 
             {
                 return CreateUserDto(appUser);
