@@ -13,7 +13,8 @@ export default observer(function CompetenceForm() {
         name: '',
         description: '', 
         category: '',
-        creationDate: new Date()
+        creationDate: new Date(),
+        users: []
     }
 
     const [competence, setCompetence] = useState(initialState);
