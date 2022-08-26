@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { string } from "yup";
-import { Competence } from "../models/Competence";
+import { Competence, CompetenceFormValues } from "../models/Competence";
 import { User, UserFormValues } from "../models/User";
+import { UserProfile, UserProfileCompetence } from "../models/UserProfile";
 import { store } from "../stores/store";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
@@ -24,8 +25,8 @@ const requests = {
 const Competences = {
     list: () => requests.get<Competence[]>('/competences'),
     details: (id: string) => requests.get<Competence>(`/competences/${id}`),
-    update: (competence: Competence) => requests.put<void>(`competences/${competence.id}`, competence),
-    create: (competence: Competence) => requests.post<void>('/competences', competence),
+    update: (competence: CompetenceFormValues) => requests.put<void>(`competences/${competence.id}`, competence),
+    create: (competence: CompetenceFormValues) => requests.post<void>('/competences', competence),
     delete: (id: string) => requests.delete<void>(`/competences/${id}`)
 }
 
@@ -35,9 +36,17 @@ const Account = {
     register: (user: UserFormValues) => requests.post<User>('account/register', user)
 }
 
+const Profile = {
+    details: (username: string) => requests.get<UserProfile>(`/Profile/${username}`),
+    getCompetences: (username: string) => requests.get<UserProfileCompetence[]>(`/Profile/${username}/competences`),
+    addCompetence: (competenceId: string, knowledgeLevel: number) => requests.post<void>(`/competences/${competenceId}/adduser?knowledgeLevel=${knowledgeLevel}`, ''),
+    removeCompetence: (competenceId: string) => requests.post<void>(`/competences/${competenceId}/adduser`, '')
+}
+
 const agent = {
     Competences,
-    Account
+    Account,
+    Profile
 }
 
 export default agent;

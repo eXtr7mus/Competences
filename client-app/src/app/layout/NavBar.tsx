@@ -14,9 +14,9 @@ export default observer(function NavBar() {
                 <Menu.Item header>
                     Competences
                 </Menu.Item>
-                <Menu.Item name='Competence list' />
+                <Menu.Item name='Competence list' as={Link} to={'/competences'}/>
                 <Menu.Item position='right'>
-                    <Button onClick={() => competenceStore.openForm()} positive content='Create Competence' />
+                    <Button onClick={() => {competenceStore.openForm()}} positive content='Create Competence' />
                 </Menu.Item>
                 <Menu.Item position='right'>
                     <Image src={user?.image || '/assets/user.png'} avatar spaced='right'/>

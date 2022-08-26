@@ -10,7 +10,7 @@ export default function CompetenceUsersList({competence}: Props) {
     return (
         <Segment>
             {competence.users.map((user) => (
-                <CompetenceUsersListItem user={user} />
+                <CompetenceUsersListItem key={user.username} user={user} />
             ))}
         </Segment>
     )

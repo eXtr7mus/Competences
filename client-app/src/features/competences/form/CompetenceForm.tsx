@@ -1,42 +1,66 @@
+import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { ChangeEvent, useState } from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Button, Form, Header, Segment } from "semantic-ui-react";
+import { CompetenceFormValues } from "../../../app/models/Competence";
 import { useStore } from "../../../app/stores/store";
+import * as Yup from "yup";
+import {v4 as uuid} from 'uuid';
+import MyTextInput from "../../../app/common/form/MyTextInput";
 
 export default observer(function CompetenceForm() {
 
     const {competenceStore} = useStore();
     const {selectedCompetence, updateCompetence, createComtepence, loading, closeForm} = competenceStore;
 
-    const initialState = selectedCompetence ?? {
-        id: '',
-        name: '',
-        description: '', 
-        category: '',
-        creationDate: new Date(),
-        users: []
+    const validationSchema = Yup.object({
+        name: Yup.string().required('The competence title is required'),
+        description: Yup.string().required('The description field is required'),
+        category: Yup.string().required('The category field is required')
+    })
+
+    const [competence, setCompetence] = useState<CompetenceFormValues>(new CompetenceFormValues());
+
+
+    function handleFormSubmit(competence: CompetenceFormValues) {
+        if (!competence.id) {
+            let newCompetence = {
+                ...competence,
+                id: uuid()
+            };
+            createComtepence(newCompetence);
+        } else {
+            updateCompetence(competence);
+        }
     }
 
-    const [competence, setCompetence] = useState(initialState);
+    useEffect(() => {
+        if (selectedCompetence?.id) setCompetence(new CompetenceFormValues(selectedCompetence));
+    }, [selectedCompetence?.id])
 
-    function handleSubmit() {
-        competence.id ? updateCompetence(competence) : createComtepence(competence);
-    }
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const {name, value} = event.target;
-        setCompetence({...competence, [name]: value});
-    }
-
-    return (
+    return(
         <Segment clearing>
-        <Form onSubmit={handleSubmit} autoComplete='off'>
-            <Form.Input placeholder='Title' value={competence.name} name='name' onChange={handleInputChange} />
-            <Form.TextArea placeholder='Description' value={competence.description} name='description' onChange={handleInputChange} />
-            <Form.Input placeholder='Category' value={competence.category} name='category' onChange={handleInputChange} />
-            <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-            <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
-        </Form>
-    </Segment>
+            <Header content='Competence Details' sub color='teal' />
+            <Formik 
+                validationSchema={validationSchema}
+                enableReinitialize 
+                initialValues={competence} 
+                onSubmit={values => handleFormSubmit(values)}>
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                        <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
+                            <MyTextInput name='name' placeholder='Name' />                            
+                            <MyTextInput placeholder='Description' name='description' />
+                            <MyTextInput placeholder='Category' name='category' />
+                            <Button 
+                                disabled={isSubmitting || !dirty || !isValid }
+                                loading={isSubmitting} floated='right' 
+                                positive type='submit' content='Submit'
+                            />
+                            { <Button onClick={closeForm} to='/activities' floated='right' type='button' content='Cancel'/> }
+                        </Form>
+                )}
+            </Formik>
+
+        </Segment>
     )
 })

@@ -5,6 +5,7 @@ import { Container } from 'semantic-ui-react';
 import CompetencesDashboard from '../../features/competences/dashboard/CompetencesDashboard';
 import ServerError from '../../features/errors/ServerError';
 import HomePage from '../../features/home/HomePage';
+import UserProfilePage from '../../features/profiles/UserProfilePage';
 import LoginForm from '../../features/users/LoginForm';
 import ModalContainer from '../common/modals/modalContainer';
 import { useStore } from '../stores/store';
@@ -39,6 +40,7 @@ export default function App() {
                 <Route exact path='/competences' component={CompetencesDashboard} />
                 <Route path='/server-error' component={ServerError} />
                 <Route path='/login' component={LoginForm} />
+                <Route key={location.key} path='/profile/:username' component={UserProfilePage} />
               </Switch>
             </Container>
           </>

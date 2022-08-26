@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Competence } from "../models/Competence";
+import { Competence, CompetenceFormValues } from "../models/Competence";
 import { v4 as uuid } from 'uuid';
 
 export default class CompetenceStore {
@@ -34,6 +34,20 @@ export default class CompetenceStore {
         }
     }
 
+    loadCompetence = async (competenceId: string) => {
+        try {
+            const competence = await agent.Competences.details(competenceId);
+            runInAction(() => {
+                console.log('loadCompetence');
+                this.competenceRegistry.set(competence.id, competence);
+                this.selectedCompetence = competence;
+                console.log(this.selectedCompetence);
+            }) 
+        } catch (error) {
+            console.log(error);
+        } 
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
@@ -55,42 +69,36 @@ export default class CompetenceStore {
         this.editMode = false;
     }
 
-    createComtepence = async (competence: Competence) => {
-        this.loading = true;
+    createComtepence = async (competence: CompetenceFormValues) => {
         competence.id = uuid();
         competence.creationDate = new Date();
         console.log(competence);
         try {
             await agent.Competences.create(competence);
             runInAction(() => {
-                this.competenceRegistry.set(competence.id, competence);
-                this.selectedCompetence = competence;
+                const newCompetence = new Competence(competence);
+                this.competenceRegistry.set(newCompetence.id, newCompetence);
+                this.selectedCompetence = newCompetence;
                 this.editMode = false;
-                this.loading = false;
             })
         } catch (error) {
             console.log(error);
-            runInAction(() => {
-                this.loading = false;
-            })
         }
     }
 
-    updateCompetence = async (competence: Competence) => {
-        this.loading = true;
+    updateCompetence = async (competence: CompetenceFormValues) => {
         try {
             await agent.Competences.update(competence);
             runInAction(() => {
-                this.competenceRegistry.set(competence.id, competence);
-                this.selectedCompetence = competence;
-                this.editMode = false;
-                this.loading = false;
+                if (competence.id) {
+                    let updatedCompetence = {...this.selectedCompetence, ...competence}
+                    this.competenceRegistry.set(competence.id, updatedCompetence as Competence);
+                    this.selectedCompetence = updatedCompetence as Competence;
+                    this.editMode = false;
+                }
             })
         } catch (error) {
             console.log(error);
-            runInAction(() => {
-                this.loading = false;
-            })
         }
     }
 

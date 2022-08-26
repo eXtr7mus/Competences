@@ -13,6 +13,6 @@ namespace Application.Competences
         public string Description { get; set; }
         public string Category { get; set; }
         public DateTime CreationDate { get; set; }
-        public ICollection<Profile> Users { get; set; }
+        public ICollection<ProfileDto> Users { get; set; }
     }
 }

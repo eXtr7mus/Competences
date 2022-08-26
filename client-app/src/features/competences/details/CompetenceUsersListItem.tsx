@@ -1,8 +1,8 @@
 import { List, Segment } from "semantic-ui-react";
-import { getKnowledgeLevelString, Profile } from "../../../app/models/Profile";
+import { CompetenceProfiles, getKnowledgeLevelString } from "../../../app/models/CompetenceProfiles";
 
 interface Props {
-    user: Profile
+    user: CompetenceProfiles
 }
 
 export default function CompetenceUsersListItem({user}: Props) {

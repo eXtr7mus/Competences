@@ -40,7 +40,7 @@ namespace Application.Competences
 
                 if (competence == null) return null;
 
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == _userAccessor.GetUsername());
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
                 if (user == null) return null;
 

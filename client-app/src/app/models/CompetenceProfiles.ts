@@ -5,7 +5,7 @@ export enum KnowledgeLevel {
     expert
 }
 
-export interface Profile {
+export interface CompetenceProfiles {
     username: string;
     displayName: string;
     image: string;
