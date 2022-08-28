@@ -7,11 +7,16 @@ import { useStore } from "../../../app/stores/store";
 import * as Yup from "yup";
 import {v4 as uuid} from 'uuid';
 import MyTextInput from "../../../app/common/form/MyTextInput";
+import { Link, useHistory, useParams } from "react-router-dom";
 
 export default observer(function CompetenceForm() {
 
+    const history = useHistory();
     const {competenceStore} = useStore();
-    const {selectedCompetence, updateCompetence, createComtepence, loading, closeForm} = competenceStore;
+    const { updateCompetence, createComtepence, loadCompetence} = competenceStore;
+    const {id} = useParams<{id: string}>();
+
+    const [competence, setCompetence] = useState<CompetenceFormValues>(new CompetenceFormValues());
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The competence title is required'),
@@ -19,7 +24,11 @@ export default observer(function CompetenceForm() {
         category: Yup.string().required('The category field is required')
     })
 
-    const [competence, setCompetence] = useState<CompetenceFormValues>(new CompetenceFormValues());
+    useEffect(() => {
+        if (id) loadCompetence(id).then(competence => setCompetence(new CompetenceFormValues(competence)));
+    }, [id, loadCompetence])
+
+
 
 
     function handleFormSubmit(competence: CompetenceFormValues) {
@@ -28,15 +37,13 @@ export default observer(function CompetenceForm() {
                 ...competence,
                 id: uuid()
             };
-            createComtepence(newCompetence);
+            createComtepence(newCompetence).then(() => history.push(`/competence/${newCompetence.id}`));
         } else {
-            updateCompetence(competence);
+            updateCompetence(competence).then(() => history.push(`/competence/${competence.id}`));
         }
     }
 
-    useEffect(() => {
-        if (selectedCompetence?.id) setCompetence(new CompetenceFormValues(selectedCompetence));
-    }, [selectedCompetence?.id])
+
 
     return(
         <Segment clearing>
@@ -56,7 +63,7 @@ export default observer(function CompetenceForm() {
                                 loading={isSubmitting} floated='right' 
                                 positive type='submit' content='Submit'
                             />
-                            { <Button onClick={closeForm} to='/activities' floated='right' type='button' content='Cancel'/> }
+                            { <Button as={Link} to={`/competences`} floated='right' type='button' content='Cancel'/> }
                         </Form>
                 )}
             </Formik>

@@ -3,6 +3,8 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
 import CompetencesDashboard from '../../features/competences/dashboard/CompetencesDashboard';
+import CompetenceDetails from '../../features/competences/details/CompetenceDetails';
+import CompetenceForm from '../../features/competences/form/CompetenceForm';
 import ServerError from '../../features/errors/ServerError';
 import HomePage from '../../features/home/HomePage';
 import UserProfilePage from '../../features/profiles/UserProfilePage';
@@ -41,6 +43,8 @@ export default function App() {
                 <Route path='/server-error' component={ServerError} />
                 <Route path='/login' component={LoginForm} />
                 <Route key={location.key} path='/profile/:username' component={UserProfilePage} />
+                <Route key={location.key} path={['/competence/:id/edit', '/createCompetence']} component={CompetenceForm} />
+                <Route key={location.key} path='/competence/:id' component={CompetenceDetails} />   
               </Switch>
             </Container>
           </>

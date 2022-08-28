@@ -35,17 +35,27 @@ export default class CompetenceStore {
     }
 
     loadCompetence = async (competenceId: string) => {
+        this.setLoadingInitial(true);
         try {
             const competence = await agent.Competences.details(competenceId);
+            this.setCompetence(competence);
             runInAction(() => {
-                console.log('loadCompetence');
-                this.competenceRegistry.set(competence.id, competence);
                 this.selectedCompetence = competence;
-                console.log(this.selectedCompetence);
             }) 
+            this.setLoadingInitial(false);
+            return competence;
         } catch (error) {
             console.log(error);
+            this.setLoadingInitial(false);
         } 
+     }
+
+    private setCompetence = (competence: Competence) => {
+        this.competenceRegistry.set( competence.id, competence );
+    }
+
+    private getCompetence = (id: string) => {
+        return this.competenceRegistry.get(id);
     }
 
     setLoadingInitial = (state: boolean) => {
@@ -108,7 +118,6 @@ export default class CompetenceStore {
             await agent.Competences.delete(id);
             runInAction(() => {
                 this.competenceRegistry.delete(id);
-                if (this.selectedCompetence?.id === id) this.cancelSelectedCompetence();
                 this.loading = false;
             })
         } catch (error) {

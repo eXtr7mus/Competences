@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Label } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import CompetenceUsersList from "./CompetenceUsersList";
@@ -8,6 +8,7 @@ import { Form, Formik } from "formik";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import { knowledgeOptions } from "../../../app/common/options/knowledgeOptions";
+import { Link, useParams } from "react-router-dom";
 
 interface FormValues {
     knowledgeLevel: number;
@@ -16,14 +17,29 @@ interface FormValues {
 export default observer(function CompetenceDetails() {
 
     const {profileStore, competenceStore, userStore} = useStore();
-    const {selectedCompetence: competence, openForm, cancelSelectedCompetence, loadCompetence} = competenceStore;
+    const {selectedCompetence: competence, loadCompetence, loadingInitial} = competenceStore;
     const {addCompetence, removeCompetence} = profileStore;
     const {user} = userStore;
+    const {id} = useParams<{id: string}>();
 
     const [editmode, setEditmode] = useState(false);
+    
+    
 
-    if (!competence) return <h1>not found</h1>
+    useEffect (() => {
+        console.log(id);
+        if (id) loadCompetence(id)
+    }, [id, loadCompetence])
+    
+    if (!competence && loadingInitial) 
+    {
+        return <h1>Loading...</h1>;
+    }
 
+    if (!competence) 
+    {
+        return <h1>Not found</h1>;
+    }
     const validationSchema = Yup.object({
         knowledgeLevel: Yup.number().required('The activity title is required').min(1, "Value must be between 1 and 4").max(4, "Value must be between 1 and 4"),
     })
@@ -66,8 +82,8 @@ export default observer(function CompetenceDetails() {
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(competence.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedCompetence} basic color='grey' content='Cancel' />
+                    <Button as={Link} to={`/competence/${id}/edit`} basic color='blue' content='Edit' />
+                    <Button as={Link} to={'/competences'} basic color='grey' content='Back' />
                 </Button.Group>
                 <>
                     { editmode ? ( 
@@ -80,7 +96,7 @@ export default observer(function CompetenceDetails() {
                                 <Form style={{marginTop:'5px'}} className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                                     <MySelectInput options={knowledgeOptions} name='knowledgeLevel' placeholder='Knowledge Level' />                            
                                     <Button 
-                                        disabled={isSubmitting || !dirty || !isValid }
+                                        disabled={isSubmitting || !isValid }
                                         loading={isSubmitting} floated='right' 
                                         positive type='submit' content='Submit'
                                         style={{marginBottom:'5px'}}

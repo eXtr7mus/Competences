@@ -21,10 +21,6 @@ export default observer(function CompetencesDashboard() {
                 <CompetenceList />
             </GridColumn>
             <GridColumn width={6}>
-                {selectedCompetence && !editMode &&
-                <CompetenceDetails />}
-                {editMode &&
-                <CompetenceForm/>}
             </GridColumn>
         </Grid>
         
