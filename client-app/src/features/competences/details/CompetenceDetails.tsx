@@ -42,7 +42,7 @@ export default observer(function CompetenceDetails() {
     }
 
     function hasCompetence() : boolean {
-        if (competence?.users.find(x => x.username === user?.username))
+        if (competence?.users?.find(x => x.username === user?.username))
             return true;
         return false;
     }

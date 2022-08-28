@@ -2,6 +2,7 @@ using System;
 
 namespace Application.Profiles
 {
+    //Dto to get competences for user profile
     public class ProfileCompetenceDto
     {
         public Guid Id { get; set; }

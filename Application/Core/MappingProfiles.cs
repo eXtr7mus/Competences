@@ -22,7 +22,8 @@ namespace Application.Core
                 .ForMember(d => d.Category, o => o.MapFrom(s => s.Competence.Category))
                 .ForMember(d => d.KnowledgeLevel, o => o.MapFrom(s => s.KnowledgeLevel));
                 
-            CreateMap<AppUser, Profiles.Profile>();
+            CreateMap<AppUser, Profiles.Profile>()
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.UserPhoto.Url));
                 
         }
     }

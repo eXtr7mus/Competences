@@ -13,6 +13,7 @@ namespace Persistence
 
         public DbSet<Competence> Competences { get; set; }
         public DbSet<UserCompetence> UserCompetences { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

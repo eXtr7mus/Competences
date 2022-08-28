@@ -8,5 +8,6 @@ namespace Domain
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public ICollection<UserCompetence> Competences { get; set; }
+        public Photo UserPhoto { get; set; }
     }
 }
