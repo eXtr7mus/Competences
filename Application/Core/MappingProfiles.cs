@@ -14,7 +14,9 @@ namespace Application.Core
             CreateMap<UserCompetence, Profiles.ProfileDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))
-                .ForMember(d => d.KnowledgeLevel, o => o.MapFrom(s => s.KnowledgeLevel));
+                .ForMember(d => d.KnowledgeLevel, o => o.MapFrom(s => s.KnowledgeLevel))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.AppUser.UserPhoto.Url));
+
 
             CreateMap<UserCompetence, Profiles.ProfileCompetenceDto>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Competence.Id))
@@ -24,6 +26,8 @@ namespace Application.Core
                 
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.UserPhoto.Url));
+
+            CreateMap<Profiles.Profile, AppUser>();
                 
         }
     }

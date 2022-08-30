@@ -16,6 +16,10 @@ body{
   width: 100%;
 }
 
+.Item-Description{
+  word-break: break-word;
+}
+
 /*home page styles*/
 
 .masthead {

@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { ChangeEvent, useEffect, useState } from "react";
+import react from "react";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
 import { CompetenceFormValues } from "../../../app/models/Competence";
 import { useStore } from "../../../app/stores/store";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import {v4 as uuid} from 'uuid';
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import { Link, useHistory, useParams } from "react-router-dom";
+import MyTextArea from "../../../app/common/form/MyTextArea";
 
 export default observer(function CompetenceForm() {
 
@@ -16,7 +17,7 @@ export default observer(function CompetenceForm() {
     const { updateCompetence, createComtepence, loadCompetence} = competenceStore;
     const {id} = useParams<{id: string}>();
 
-    const [competence, setCompetence] = useState<CompetenceFormValues>(new CompetenceFormValues());
+    const [competence, setCompetence] = react.useState<CompetenceFormValues>(new CompetenceFormValues());
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The competence title is required'),
@@ -24,7 +25,7 @@ export default observer(function CompetenceForm() {
         category: Yup.string().required('The category field is required')
     })
 
-    useEffect(() => {
+    react.useEffect(() => {
         if (id) loadCompetence(id).then(competence => setCompetence(new CompetenceFormValues(competence)));
     }, [id, loadCompetence])
 
@@ -56,7 +57,7 @@ export default observer(function CompetenceForm() {
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                         <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                             <MyTextInput name='name' placeholder='Name' />                            
-                            <MyTextInput placeholder='Description' name='description' />
+                            <MyTextArea placeholder='Description' name='description' rows={3} />
                             <MyTextInput placeholder='Category' name='category' />
                             <Button 
                                 disabled={isSubmitting || !dirty || !isValid }

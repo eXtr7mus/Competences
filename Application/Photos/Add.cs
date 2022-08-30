@@ -35,10 +35,21 @@ namespace Application.Photos
 
             public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users
+                var user = await _context.Users.Include(x => x.UserPhoto)
                     .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
                 if (user == null) return null;
+
+                 var currentPhoto = user.UserPhoto;
+
+                if (currentPhoto != null)
+                {
+                    var deleteResult = await _photoAccessor.DeletePhoto(currentPhoto.Id);
+
+                    if (deleteResult == null) return Result<Photo>.Failure("Error deleting photo from cloudinary");
+
+                    _context.Photos.Remove(currentPhoto);
+                }
 
                 var photoUploadResult = await _photoAccessor.AddPhoto(request.File);
 

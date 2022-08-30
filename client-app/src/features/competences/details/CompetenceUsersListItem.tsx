@@ -1,4 +1,4 @@
-import { Label, List, Segment } from "semantic-ui-react";
+import { Label, List, Segment, Image } from "semantic-ui-react";
 import { CompetenceProfiles, getKnowledgeLevelString } from "../../../app/models/CompetenceProfiles";
 import { useStore } from "../../../app/stores/store";
 
@@ -19,7 +19,9 @@ export default function CompetenceUsersListItem({user}: Props) {
             }
             <List horizontal divided>
                 <List.Item>
-
+                    <Image src={user.image || '/assets/user.png'} circular size='mini' spaced='right'/>
+                </List.Item>
+                <List.Item>
                     {user.displayName}
                 </List.Item>
                 <List.Item>

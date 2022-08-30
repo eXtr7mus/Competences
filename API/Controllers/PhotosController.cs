@@ -16,10 +16,10 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(command));
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete()
         {
-            return HandleResult(await Mediator.Send(new Delete.Command{Id = id}));
+            return HandleResult(await Mediator.Send(new Delete.Command()));
         }
     }
 }

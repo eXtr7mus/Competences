@@ -5,9 +5,12 @@ import { Container } from 'semantic-ui-react';
 import CompetencesDashboard from '../../features/competences/dashboard/CompetencesDashboard';
 import CompetenceDetails from '../../features/competences/details/CompetenceDetails';
 import CompetenceForm from '../../features/competences/form/CompetenceForm';
+import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
 import HomePage from '../../features/home/HomePage';
+import ProfileEditForm from '../../features/profiles/forms/ProfileEditForm';
 import UserProfilePage from '../../features/profiles/UserProfilePage';
+import UsersList from '../../features/profiles/UsersList';
 import LoginForm from '../../features/users/LoginForm';
 import ModalContainer from '../common/modals/modalContainer';
 import { useStore } from '../stores/store';
@@ -42,9 +45,12 @@ export default function App() {
                 <Route exact path='/competences' component={CompetencesDashboard} />
                 <Route path='/server-error' component={ServerError} />
                 <Route path='/login' component={LoginForm} />
-                <Route key={location.key} path='/profile/:username' component={UserProfilePage} />
+                <Route path='/users' component={UsersList} />
+                <Route exact key={location.key} path='/profiles/:username' component={UserProfilePage} />
                 <Route key={location.key} path={['/competence/:id/edit', '/createCompetence']} component={CompetenceForm} />
                 <Route key={location.key} path='/competence/:id' component={CompetenceDetails} />   
+                <Route path='/profiles/:username/edit' component={ProfileEditForm} />   
+                <Route component={NotFound} />
               </Switch>
             </Container>
           </>

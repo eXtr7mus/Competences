@@ -2,7 +2,7 @@ export interface User {
     displayName: string;
     username: string;
     token: string;
-    image: string;
+    image?: string;
 }
 
 export interface UserFormValues {

@@ -5,10 +5,10 @@ import { useStore } from "../../../app/stores/store";
 import CompetenceUsersList from "./CompetenceUsersList";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
-import MyTextInput from "../../../app/common/form/MyTextInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import { knowledgeOptions } from "../../../app/common/options/knowledgeOptions";
 import { Link, useParams } from "react-router-dom";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 interface FormValues {
     knowledgeLevel: number;
@@ -27,18 +27,17 @@ export default observer(function CompetenceDetails() {
     
 
     useEffect (() => {
-        console.log(id);
         if (id) loadCompetence(id)
     }, [id, loadCompetence])
     
-    if (!competence && loadingInitial) 
+    if (loadingInitial) 
     {
-        return <h1>Loading...</h1>;
+        return <LoadingComponent/>;
     }
 
     if (!competence) 
     {
-        return <h1>Not found</h1>;
+        return <LoadingComponent/>;
     }
     const validationSchema = Yup.object({
         knowledgeLevel: Yup.number().required('The activity title is required').min(1, "Value must be between 1 and 4").max(4, "Value must be between 1 and 4"),
