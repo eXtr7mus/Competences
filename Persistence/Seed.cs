@@ -12,7 +12,7 @@ namespace Persistence
         public static async Task SeedData(DataContext context, UserManager<AppUser> userManager) 
         {
             
-            if (!userManager.Users.Any() && !context.Competences.Any())
+            if (!userManager.Users.Any() && !context.Competences.Any() && !context.Issues.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -57,7 +57,53 @@ namespace Persistence
                         }
                     }
                 };
+
+                var issues = new List<Issue>{
+                    new Issue 
+                    {
+                        Title = "Create app",
+                        Description = "Create app for marketing with c# and java",
+                        Creator = users[0],
+                        Status = IssueStatus.New,
+                        Priority = IssuePriority.Medium,
+                        CreationDate = DateTime.UtcNow,
+                        Deadline = DateTime.UtcNow.AddDays(4),
+                        Competences = new List<IssueCompetence>
+                        {
+                            new IssueCompetence
+                            {
+                                Competence = competences[0],
+                                KnowledgePriority = 3
+                            },
+                            new IssueCompetence
+                            {
+                                Competence = competences[1],
+                                KnowledgePriority = 1
+                            }
+                        }
+                    },
+
+                    new Issue 
+                    {
+                        Title = "agwegawe apawegawegp",
+                        Description = "Create aweg for aweg with c#",
+                        Creator = users[0],
+                        Status = IssueStatus.InProgress,
+                        Priority = IssuePriority.Medium,
+                        CreationDate = DateTime.UtcNow,
+                        Deadline = DateTime.UtcNow.AddDays(6),
+                        Competences = new List<IssueCompetence>
+                        {
+                            new IssueCompetence
+                            {
+                                Competence = competences[0],
+                                KnowledgePriority = 4
+                            }
+                        }
+                    }
+                };
             
+                await context.Issues.AddRangeAsync(issues);
                 await context.Competences.AddRangeAsync(competences);
                 await context.SaveChangesAsync();
             }

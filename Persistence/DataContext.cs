@@ -13,6 +13,8 @@ namespace Persistence
 
         public DbSet<Competence> Competences { get; set; }
         public DbSet<UserCompetence> UserCompetences { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<IssueCompetence> IssueCompetence { get; set;}
         public DbSet<Photo> Photos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -28,6 +30,18 @@ namespace Persistence
             builder.Entity<UserCompetence>()
                 .HasOne(u => u.Competence)
                 .WithMany(c => c.Users)
+                .HasForeignKey(cc => cc.CompetenceId);
+
+            builder.Entity<IssueCompetence>(x => x.HasKey(c => new {c.IssueId, c.CompetenceId}));
+
+            builder.Entity<IssueCompetence>()
+                .HasOne(i => i.Issue)
+                .WithMany(c => c.Competences)
+                .HasForeignKey(cc => cc.IssueId);
+
+            builder.Entity<IssueCompetence>()
+                .HasOne(u => u.Competence)
+                .WithMany(c => c.Issues)
                 .HasForeignKey(cc => cc.CompetenceId);
         }
     }

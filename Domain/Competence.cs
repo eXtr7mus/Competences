@@ -11,5 +11,6 @@ namespace Domain
         public string Category { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<UserCompetence> Users { get; set; } = new List<UserCompetence>();
+        public ICollection<IssueCompetence> Issues { get; set; } = new List<IssueCompetence>();
     }
 }
