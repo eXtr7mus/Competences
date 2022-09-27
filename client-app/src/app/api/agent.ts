@@ -6,6 +6,7 @@ import { User, UserFormValues } from "../models/User";
 import { Photo, ProfileFormValues, UserProfile, UserProfileCompetence } from "../models/UserProfile";
 import { store } from "../stores/store";
 import {history} from "../.."
+import { Issue, IssueCompetence, IssueFormValues } from "../models/Issue";
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -98,10 +99,21 @@ const Profile = {
     deletePhoto: () => requests.delete(`/photos/`)
 }
 
+const Issues = {
+    list: () => requests.get<Issue[]>('/Issues'),
+    details: (id: string) => requests.get<Issue>(`/Issues/${id}`),
+    addCompetence: (id: string, competence: IssueCompetence) => requests.post<void>(`/Issues/${id}/addCompetence`, competence),
+    deleteCompetence: (id: string, competenceId: string) => requests.delete<void>(`/Issues/${id}/deleteCompetence/${competenceId}`),
+    create: (issue: IssueFormValues) => requests.post('/Issues', issue),
+    edit: (id: string, issue: IssueFormValues) => requests.put(`/Issues/${id}`, issue),
+    updateAssignee: (id: string, username: string) => requests.post(`/Issues/${id}/updateAssignee?username=${username}`, '')
+}
+
 const agent = {
     Competences,
     Account,
-    Profile
+    Profile,
+    Issues
 }
 
 export default agent;

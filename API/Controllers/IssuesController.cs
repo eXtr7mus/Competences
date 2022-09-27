@@ -38,13 +38,13 @@ namespace API.Controllers
                 }));
         }
 
-        [HttpDelete("{id}/deleteCompetence")]
-        public async Task<IActionResult> DeleteCompetence(Guid id, IssueCompetenceDto issueCompetenceDto)
+        [HttpDelete("{id}/deleteCompetence/{competenceId}")]
+        public async Task<IActionResult> DeleteCompetence(Guid id, Guid competenceId)
         {
             return HandleResult(await Mediator.Send(new DeleteCompetence.Command
                 {
                     Id = id, 
-                    CompetenceId = issueCompetenceDto.CompetenceId, 
+                    CompetenceId = competenceId, 
                 }));
         }
 

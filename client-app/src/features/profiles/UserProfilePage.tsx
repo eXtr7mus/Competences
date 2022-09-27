@@ -19,7 +19,7 @@ export default observer(function UserProfilePage() {
         getProfile(username);
     }, [getProfile, username])
 
-    if (!userProfile)
+    if (!userProfile || loading)
         return <LoadingComponent/>
 
     return (

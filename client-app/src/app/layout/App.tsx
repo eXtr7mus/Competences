@@ -8,6 +8,9 @@ import CompetenceForm from '../../features/competences/form/CompetenceForm';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
 import HomePage from '../../features/home/HomePage';
+import IssuesDashboard from '../../features/issues/Dashboard/IssuesDashboard';
+import IssueItem from '../../features/issues/Details/IssueItem';
+import IssueForm from '../../features/issues/form/IssueForm';
 import ProfileEditForm from '../../features/profiles/forms/ProfileEditForm';
 import UserProfilePage from '../../features/profiles/UserProfilePage';
 import UsersList from '../../features/profiles/UsersList';
@@ -46,9 +49,12 @@ export default function App() {
                 <Route path='/server-error' component={ServerError} />
                 <Route path='/login' component={LoginForm} />
                 <Route path='/users' component={UsersList} />
+                <Route path='/issues' component={IssuesDashboard} />
                 <Route exact key={location.key} path='/profiles/:username' component={UserProfilePage} />
                 <Route key={location.key} path={['/competence/:id/edit', '/createCompetence']} component={CompetenceForm} />
-                <Route key={location.key} path='/competence/:id' component={CompetenceDetails} />   
+                <Route key={location.key} path='/competence/:id' component={CompetenceDetails} />  
+                <Route key={location.key} path='/issue/:id' component={IssueItem} /> 
+                <Route path='/createIssue' component={IssueForm} />
                 <Route path='/profiles/:username/edit' component={ProfileEditForm} />   
                 <Route component={NotFound} />
               </Switch>

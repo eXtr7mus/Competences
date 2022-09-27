@@ -40,7 +40,13 @@ namespace Application.Core
                 .ForMember(d => d.KnowledgePriority, o => o.MapFrom(s => s.KnowledgePriority));
 
             CreateMap<Issue, IssueDto>();
-            CreateMap<IssueDto, Issue>().ForMember(d => d.CreationDate, o => o.Ignore());
+            CreateMap<IssueDto, Issue>()
+                .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
+                .ForMember(d => d.Priority, o => o.MapFrom(s => s.Priority))
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status))
+                .ForMember(d => d.Title, o => o.MapFrom(s => s.Title))
+                .ForMember(d => d.Deadline, o => o.MapFrom(s => s.Deadline))
+                .ForMember(d => d.CreationDate, o => o.Ignore());
                 
         }
     }

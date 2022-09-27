@@ -46,7 +46,7 @@ namespace Application.Issues
                 var issueCompetence = issue.Competences
                     .FirstOrDefault(x => x.CompetenceId == competence.Id);
 
-                if (issueCompetence == null && request.KnowledgePriority > 0)
+                if (issueCompetence == null)
                 {
                     issueCompetence = new IssueCompetence
                     {
@@ -55,9 +55,9 @@ namespace Application.Issues
                     };
                     issue.Competences.Add(issueCompetence);
                 } 
-
-                if (issueCompetence != null && request.KnowledgePriority > 0)
+                else
                     issueCompetence.KnowledgePriority = request.KnowledgePriority;
+                 
 
                 var result = await _context.SaveChangesAsync() > 0;
 

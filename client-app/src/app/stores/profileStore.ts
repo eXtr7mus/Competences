@@ -79,6 +79,7 @@ export default class ProfileStore {
             runInAction(() => {
                 if (this.userProfile) {
                     this.userProfile.image = photo.url;
+                    console.log(this.userProfile.image);
                     let updatedProfile = {...this.userProfile, ...this.userProfile}
                     this.profilesRegistry.set(this.userProfile.username, updatedProfile as UserProfile);
                     if (store.userStore.user) {

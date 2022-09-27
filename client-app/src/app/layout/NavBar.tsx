@@ -15,6 +15,7 @@ export default observer(function NavBar() {
                     Competences
                 </Menu.Item>
                 <Menu.Item name='Competences' as={Link} to={'/competences'}/>
+                <Menu.Item name='Issues' as={Link} to={'/issues'}/>
                 <Menu.Item name='Users' as={Link} to={'/users'}/>
                 <Menu.Item position='right'>
                     <Button as={NavLink} to={'/createCompetence'} positive content='Create Competence' />

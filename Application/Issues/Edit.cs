@@ -37,7 +37,7 @@ namespace Application.Issues
 
                 _mapper.Map(request.Issue, issue);
 
-           //     _context.Entry(issue).State = EntityState.Modified;
+                _context.Entry(issue).State = EntityState.Modified;
 
                 var result = await _context.SaveChangesAsync() > 0;
 
